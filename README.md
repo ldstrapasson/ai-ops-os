@@ -1,7 +1,7 @@
 # AI Operations OS
 
 **A one-person B2B company run as an operations system: 11 AI specialist agents, one orchestrator, and a human who makes the decisions.**
-Designed, built and operated by [Luccas D. Strapasson](https://www.linkedin.com/in/ldstrapasson) · London, UK · Remote · Live since August 2026
+Designed, built and operated by [Luccas D. Strapasson](https://www.linkedin.com/in/ldstrapasson) ·
 
 ## In 30 seconds
 
