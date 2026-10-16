@@ -1,38 +1,44 @@
 # AI Operations OS
 
-**A one-person company run by AI agents, built from zero by [Luccas D. Strapasson](https://www.linkedin.com/in/ldstrapasson).**
-London, UK · Remote · Live since August 2026
+**A one-person B2B company run as an operations system: 11 AI specialist agents, one orchestrator, and a human who makes the decisions.**
+Designed, built and operated by [Luccas D. Strapasson](https://www.linkedin.com/in/ldstrapasson) · London, UK · Remote · Live since August 2026
 
-I cut cost and scale ops with systems. This repo shows what I built when I had to run a full B2B pipeline alone: prospecting, outreach, content, opportunity research and delivery playbooks. I had no team and a hard compute budget.
+## In 30 seconds
 
-> This repo is a **redacted proof pack**: architecture, operating rules, sample SOPs and an illustrative scoreboard. Live data, contact lists, credentials and commercial terms are not included.
+**What it is.** The operating system I built to run a full B2B business on my own: research, pipeline, content, follow-ups and delivery playbooks. Each recurring job has one owner (an AI agent), one written rule and one daily number.
 
----
+**What I did.** I designed the org chart, wrote the operating rules, set up the schedules, and run it every day as the COO. I approve every one-to-one message before it goes out under my name. The system drafts and prepares the work; I decide.
 
-## At a glance
+**Outcomes.**
+- **Cost:** the work of roughly a full-time ops hire (an estimated ~210 hours of manual work in ~7 weeks), handled without hiring, inside a fixed compute budget and a fixed work window.
+- **Scale:** 11 specialist lanes run in parallel with clear ownership, coordinated by one orchestrator, with no extra headcount.
+- **Systems:** 40+ locked operating procedures, a shared queue board, a one-line daily scoreboard, and a lessons log per agent that feeds back into the rules every week.
 
-| What | Number | Source |
-|---|---|---|
-| Specialist AI agents | **11** + 1 orchestrator | org chart SSOT |
-| Locked SOPs (single sources of truth) | **40+** | locked SOP files |
-| Per-agent playbooks + lessons logs | **11 + 11** | one per agent |
-| Scheduled runs per weekday | **20+** | routine schedule |
-| Targeted LinkedIn engagements | **350+ in 10 days** | engagement log |
-| Contacts scored against an ICP | **1,270+** | ICP audit log |
-| Manual ops work automated | **~330 h in 7 weeks (≈1 FTE, estimate)** | [docs/METRICS.md](docs/METRICS.md) |
+> This repo is a **redacted proof pack**: architecture, operating rules, SOPs and an illustrative scoreboard. Live data, contact lists, credentials and commercial terms are not included.
 
 ---
 
-## Architecture
+## For technical reviewers
+
+| Read this | What you'll find |
+|---|---|
+| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | Layers, a weekday schedule, the event → action flow, design rules |
+| [AGENTS.md](AGENTS.md) | The 11 specialists + orchestrator: what each owns and does not own |
+| [sops/](sops/) | Operating rules: decision rights, platform pace, outreach format, handoffs, human-blocker SLA, product gate |
+| [docs/METRICS.md](docs/METRICS.md) | How every number in this README is derived, with assumptions |
+| [docs/SAMPLE_SCOREBOARD.md](docs/SAMPLE_SCOREBOARD.md) | The daily scoreboard format (illustrative values) |
+| [REDACTION_CHECKLIST.md](REDACTION_CHECKLIST.md) | What is checked before anything is published here |
+
+### Architecture at a glance
 
 ```mermaid
 flowchart TD
-    CEO["Luccas (CEO)<br/>priorities + approvals"] --> ORCH["Orchestrator agent<br/>(COO): SSOT, handoffs, daily report"]
+    CEO["Luccas (CEO)<br/>priorities + approvals"] --> ORCH["Orchestrator agent (COO)<br/>single source of truth, handoffs, daily report"]
     ORCH --> GTM
     ORCH --> GROW
     ORCH --> BUILD
     subgraph GTM["Go-to-market"]
-        A1["LI Engage"]
+        A1["Social Engagement"]
         A2["LI Pipeline"]
         A3["Email Demand"]
         A4["Sales"]
@@ -42,48 +48,52 @@ flowchart TD
         B2["Content Scheduler"]
         B3["Market Research"]
     end
-    subgraph BUILD["Delivery & build"]
+    subgraph BUILD["Delivery, build & support"]
         C1["Ops Delivery"]
         C2["Tech Build"]
         C3["Opportunity Dig"]
-        C4["Contracts"]
+        C4["General Assistant"]
     end
-    GTM --- BOARD[("Queue board + scoreboard<br/>(shared files)")]
+    GTM --- BOARD[("Queue board + scoreboard + run log<br/>(shared files)")]
     GROW --- BOARD
     BUILD --- BOARD
+    BOARD -. "drafts awaiting yes" .-> CEO
 ```
 
-Full detail: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) · agent roster: [AGENTS.md](AGENTS.md)
+### Operating rules
 
----
+1. **Human approval on outbound.** Agents draft; I approve each one-to-one message in chat before it is sent. Routine, low-risk work runs only under standing approvals I set in writing and can withdraw. Silence or a skipped request is a no.
+2. **Decision rights are written down.** Irreversible or reputational decisions are mine, one by one. Reversible work inside a lane is the agent's call. A short list of standing approvals covers routine, pre-approved work. ([sops/DECISION_RIGHTS.md](sops/DECISION_RIGHTS.md))
+3. **Human pace on third-party platforms.** Work is spread through the day like a person would do it, with no bursts. Any platform warning stops all activity until I review it. ([sops/PLATFORM_PACE_AND_WARNINGS.md](sops/PLATFORM_PACE_AND_WARNINGS.md))
+4. **One source of truth per topic.** Every rule lives in one locked file; superseded rules keep a banner pointing to the new one.
+5. **Hierarchy and one-line handoffs.** Specialists report to the orchestrator; only the orchestrator wakes agents. Handoff = `to | action | person/link | deadline`. No FYI messages.
+6. **Measure daily, learn weekly.** One scoreboard line per day; a weekly retro; short blameless postmortems for incidents; lessons promoted into the rules.
+7. **Fail closed.** Missing evidence (a verbatim quote, a source link, a verified address) means the item is parked with a reason code. Nothing is guessed.
+8. **Cost guardrails.** Fixed work window, runs with nothing new end silently, a cap on concurrent heavy sessions, memory checks before heavy runs.
 
-## How it runs
+### Design choices (and why)
 
-1. **One source of truth per topic.** Every rule lives in a locked SOP file. Agents read their own workflow card, not the whole repo, which keeps token cost down.
-2. **Hierarchy.** Specialists execute → report to the orchestrator → orchestrator reports to me. Only the orchestrator wakes other agents.
-3. **One-line handoffs.** `to | action | person/link | deadline`. No FYI messages and no "done" pings; status goes on the queue board.
-4. **Daily scoreboard.** One line per day splits the commercial funnel from everything else. Sample: [docs/SAMPLE_SCOREBOARD.md](docs/SAMPLE_SCOREBOARD.md).
-5. **Human gates.** Logins/OTP/2FA escalate to me within 15 minutes. Silence is never treated as approval, and outbound email goes out only after my approval.
-6. **Product gate.** Research proposes → orchestrator filters → I say go/no-go → Tech builds. Agents don't invent products.
-7. **Self-improvement.** Every agent appends to its lessons log, and lessons that work get promoted into locked SOPs.
-8. **Cost guardrails.** Fixed work window, routines with nothing new end silently, max concurrent browser agents, memory hygiene before heavy runs.
+| Choice | Why |
+|---|---|
+| Markdown + CSV as the state layer | Diffable, auditable, human-readable; nothing hidden in chat history |
+| One lane per agent, explicit "does not own" | Prevents double work and double spend (Brooks: adding agents adds coordination cost) |
+| Orchestrator is file-only where possible | Cheap to run hourly; heavy work stays with the lane owner |
+| Approvals batched twice a day | Keeps me as the decision-maker without becoming the bottleneck |
+| Run log, one line per scheduled run | Missed or failed runs become visible the same day |
+| Product gate before any build | Research proposes, I decide, then Tech builds; agents don't invent products |
 
-Sample SOPs: [sops/](sops/)
+### Stack
 
----
+LLM agents on a hosted agent platform · Python · email and calendar connectors · a browser workspace used under human approval · Markdown + CSV as the source-of-truth layer.
 
-## Stack
+### First agent-built product: ThreadProof
 
-Cursor · Claude / LLM agents on a hosted agent platform · Python · Playwright browser automation · Markdown + CSV as the source-of-truth layer (git-friendly, diffable, human-readable).
-
-## First agent-built product: ThreadProof
-
-ThreadProof turns real replies in LinkedIn threads into proof posts. It has a **quote gate**: nothing is marked ready without the verbatim reply quote. That stops invented social proof by design.
+ThreadProof turns real replies in public threads into proof posts. Its **quote gate** means nothing is marked ready without the verbatim reply, so invented social proof is blocked by design.
 
 ---
 
 ## Why it matters for an ops role
 
-The same pattern works inside any scaling company. Give each recurring problem an owner, write the rule down once, measure it daily, and automate before you hire.
+The same pattern works inside any scaling company: give each recurring problem one owner, write the rule down once, keep humans on the decisions that matter, measure daily, and systematize before you hire.
 
-**Built by Luccas D. Strapasson** · [LinkedIn](https://www.linkedin.com/in/ldstrapasson) · luccasdstrapasson@gmail.com
+**Built by Luccas D. Strapasson** · [LinkedIn](https://www.linkedin.com/in/ldstrapasson)
