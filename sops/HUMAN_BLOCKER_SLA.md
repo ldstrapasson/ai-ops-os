@@ -1,6 +1,6 @@
 # SOP: Human-blocker escalation SLA (redacted sample)
 
-**Trigger:** OTP · password · secure form · approval widget · 2FA.
+**Trigger:** OTP · password · secure form · approval request · 2FA. Platform warnings follow [PLATFORM_PACE_AND_WARNINGS.md](PLATFORM_PACE_AND_WARNINGS.md).
 
 1. Orchestrator notifies the CEO **within 15 minutes**.
 2. The specialist **holds the session open** while waiting.
@@ -11,5 +11,5 @@
 |---|---|
 | BLOCKED_OTP | One-time passcode |
 | BLOCKED_PASSWORD | Credential required |
-| BLOCKED_WIDGET | CEO approval required |
+| BLOCKED_WIDGET | Waiting for the CEO's yes in chat |
 | BLOCKED_2FA | Two-factor challenge |
